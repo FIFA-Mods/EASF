@@ -64,6 +64,8 @@ std::vector<unsigned char> sha256(const unsigned char* data, size_t len) {
 std::vector<unsigned char> get_key(std::wstring const &game) {
     if (game == L"fifa15" || game == L"fifa16")
         return { 0x24, 0x9B, 0xF2, 0x7A, 0xF5, 0xD7, 0x48, 0x7B, 0x15, 0x78, 0xD8, 0x33, 0xF2, 0xDE, 0x39, 0xB5 };
+    else if (game == L"fifaonline4" || game == L"fconline4")
+        return { 0x3E, 0X52, 0XBD, 0X9A, 0XF8, 0XA1, 0XC4, 0X29, 0XF7, 0XB6, 0X3C, 0X86, 0X7E, 0X4C, 0X51, 0XDA };
     return { 0x24, 0x91, 0x85, 0xE3, 0x70, 0x7B, 0xD8, 0x83, 0xCE, 0xA5, 0xC5, 0x11, 0xF5, 0xD4, 0x67, 0xF2 };
 }
 
@@ -111,7 +113,7 @@ int wmain(int argc, wchar_t* argv[]) {
     header.signature = 'FSAE';
     header.decryptedSize = _byteswap_ulong(dataSize);
     memcpy(header.keyid, "datax   ", 8);
-    memcpy(header.digest, sha256(data.data(), std::min(data.size(), 32u)).data(), SHA256_DIGEST_LENGTH);
+    memcpy(header.digest, sha256(data.data(), 32).data(), 32);
     fwrite(&header, 1, sizeof(EASF_header), fo);
 #endif
     fwrite(result.data(), 1, result.size(), fo);
